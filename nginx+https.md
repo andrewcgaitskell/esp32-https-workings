@@ -82,11 +82,12 @@ add-apt-repository ppa:certbot/certbot
 
 You’ll need to press ENTER to accept. Then, update the package list to pick up the new repository’s package information.
 
-    sudo apt-get update
+    apt update
+    apt upgrade
 
 And finally, install Certbot’s Nginx package with apt-get.
 
-    sudo apt install python-certbot-nginx
+    apt install python-certbot-nginx
 
 Certbot is now ready to use, but in order for it to configure SSL for Nginx, we need to verify some of Nginx’s configuration.
 Step 2 — Confirming Nginx’s Configuration
@@ -166,7 +167,10 @@ Certbot provides a variety of ways to obtain SSL certificates, through various p
     sudo certbot --nginx -d example.com -d www.example.com
 
     sudo certbot --nginx -d acgdata.info -d www.acgdata.info
-
+    
+    certbot --nginx -d acghub.online -d www.acghub.online
+    
+    
 This runs certbot with the --nginx plugin, using -d to specify the names we’d like the certificate to be valid for.
 
 If this is your first time running certbot, you will be prompted to enter an email address and agree to the terms of service. After doing so, certbot will communicate with the Let’s Encrypt server, then run a challenge to verify that you control the domain you’re requesting a certificate for.
