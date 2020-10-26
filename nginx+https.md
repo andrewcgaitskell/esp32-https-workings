@@ -256,3 +256,11 @@ Client with the currently selected authenticator does not support any combinatio
 he CA. You may need to use an authenticator plugin that can do challenges over DNS.                                
 Client with the currently selected authenticator does not support any combination of challenges that will satisfy t
 he CA. You may need to use an authenticator plugin that can do challenges over DNS.
+
+
+https://certbot.eff.org/docs/install.html?highlight=wildcard
+
+--server https://acme-v02.api.letsencrypt.org/directory
+
+certbot --nginx -d *.acghub.online --server https://acme-v02.api.letsencrypt.org/directory
+
