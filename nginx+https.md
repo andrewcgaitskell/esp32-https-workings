@@ -170,3 +170,10 @@ If you see no errors, you’re all set. When necessary, Certbot will renew your 
 Conclusion
 
 In this tutorial, you installed the Let’s Encrypt client certbot, downloaded SSL certificates for your domain, configured Nginx to use these certificates, and set up automatic certificate renewal. If you have further questions about using Certbot, their documentation is a good place to start.
+
+### Revoking Certificate
+
+certbot revoke --cert-path /etc/letsencrypt/archive/${YOUR_DOMAIN}/cert1.pem
+
+
+
