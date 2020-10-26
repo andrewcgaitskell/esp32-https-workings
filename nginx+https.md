@@ -181,3 +181,42 @@ certbot revoke --cert-path /etc/letsencrypt/archive/acghub.online/cert1.pem
 ### New Certificate to Include Sub Domains
 
 certbot --nginx -d acghub.online -d *.acghub.online
+
+
+-------------------
+
+cd archive/
+root@acghub-web-1:/etc/letsencrypt/archive# ls
+acghub.online
+root@acghub-web-1:/etc/letsencrypt/archive# cd acghub.online/
+root@acghub-web-1:/etc/letsencrypt/archive/acghub.online# ls
+cert1.pem  chain1.pem  fullchain1.pem  privkey1.pem
+root@acghub-web-1:/etc/letsencrypt/archive/acghub.online# certbot revoke --cert-path /etc/letsencrypt/archive/acghu
+b.online/cert1.pem
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Would you like to delete the cert(s) you just revoked, along with all earlier
+and later versions of the cert?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es (recommended)/(N)o: Y
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Deleted all files relating to certificate acghub.online.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations! You have successfully revoked the certificate that was located
+at /etc/letsencrypt/archive/acghub.online/cert1.pem
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+root@acghub-web-1:/etc/letsencrypt/archive/acghub.online# certbot --nginx -d acghub.online -d *.acghub.online
+sh: 0: getcwd() failed: No such file or directory
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Error while running nginx -c /etc/nginx/nginx.conf -t.
+nginx: [emerg] BIO_new_file("/etc/letsencrypt/live/acghub.online/fullchain.pem") failed (SSL: error:02001002:system
+ library:fopen:No such file or directory:fopen('/etc/letsencrypt/live/acghub.online/fullchain.pem','r') error:2006D
+080:BIO routines:BIO_new_file:no such file)
+nginx: configuration file /etc/nginx/nginx.conf test failed
+The nginx plugin is not working; there may be problems with your existing configuration.
+The error was: MisconfigurationError('Error while running nginx -c /etc/nginx/nginx.conf -t.\n\nnginx: [emerg] BIO_
+new_file("/etc/letsencrypt/live/acghub.online/fullchain.pem") failed (SSL: error:02001002:system library:fopen:No s
+uch file or directory:fopen(\'/etc/letsencrypt/live/acghub.online/fullchain.pem\',\'r\') error:2006D080:BIO routine
+s:BIO_new_file:no such file)\nnginx: configuration file /etc/nginx/nginx.conf test failed\n',)
+root@acghub-web-1:/etc/letsencrypt/archive/acghub.online# 
