@@ -220,3 +220,39 @@ new_file("/etc/letsencrypt/live/acghub.online/fullchain.pem") failed (SSL: error
 uch file or directory:fopen(\'/etc/letsencrypt/live/acghub.online/fullchain.pem\',\'r\') error:2006D080:BIO routine
 s:BIO_new_file:no such file)\nnginx: configuration file /etc/nginx/nginx.conf test failed\n',)
 root@acghub-web-1:/etc/letsencrypt/archive/acghub.online# 
+
+============================
+
+
+IMPORTANT NOTES:                                                                                                   
+ - Congratulations! Your certificate and chain have been saved at:                                                 
+   /etc/letsencrypt/live/acghub.online/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/acghub.online/privkey.pem
+   Your cert will expire on 2021-01-24. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot again
+   with the "certonly" option. To non-interactively renew *all* of
+   your certificates, run "certbot renew"
+ - Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+ - If you like Certbot, please consider supporting our work by:
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+ - We were unable to subscribe you the EFF mailing list because your
+   e-mail address appears to be invalid. You can try again later by
+   visiting https://act.eff.org.
+   
+## trying to use wildcard
+
+root@acghub-vm-2:/home/andrew_gaitskell# certbot --nginx -d *.acghub.online
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator nginx, Installer nginx
+Obtaining a new certificate
+Performing the following challenges:
+Client with the currently selected authenticator does not support any combination of challenges that will satisfy t
+he CA. You may need to use an authenticator plugin that can do challenges over DNS.                                
+Client with the currently selected authenticator does not support any combination of challenges that will satisfy t
+he CA. You may need to use an authenticator plugin that can do challenges over DNS.
