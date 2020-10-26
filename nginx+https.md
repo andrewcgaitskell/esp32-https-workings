@@ -177,3 +177,7 @@ certbot revoke --cert-path /etc/letsencrypt/archive/${YOUR_DOMAIN}/cert1.pem
 
 
 certbot revoke --cert-path /etc/letsencrypt/archive/acghub.online/cert1.pem
+
+### New Certificate to Include Sub Domains
+
+certbot --nginx -d acghub.online -d *.acghub.online
