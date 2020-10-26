@@ -176,4 +176,4 @@ In this tutorial, you installed the Let’s Encrypt client certbot, downloaded S
 certbot revoke --cert-path /etc/letsencrypt/archive/${YOUR_DOMAIN}/cert1.pem
 
 
-
+certbot revoke --cert-path /etc/letsencrypt/archive/acghub.online/cert1.pem
