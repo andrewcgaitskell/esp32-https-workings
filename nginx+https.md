@@ -7,7 +7,9 @@ apt update
 apt install nginx
 
 
-open ports 80 and 443
+open ports 80 and 443 using Firewall interface on GCP web site - do not do it via the Command line - it breaks SSH and VM access is broken
+
+# Useful Commands
 
 systemctl status nginx
 
@@ -25,58 +27,70 @@ systemctl enable nginx -- re enable on boot
 
 ===========
 
-started 
+# started from these
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-let-s-encrypt-with-nginx-server-blocks-on-ubuntu-16-04
 https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04
 
+# Steps to HTTPS on ESP32
 
-godaddy
+## Step 1: godaddy
+
 A record with example.com pointing to your server’s public IP address.
+
 An A record with www.example.com pointing to your server’s public IP address.
 
-create vm on gcp
+## Step 2: create vm on gcp
 
   enable http & https
   fix ip address using standard tier
   ubuntu 1804 lts
 
-firewall
+## Open Firewall
 
-  via gcp console allow http andf https
+  via gcp console allow http and https
+  enable access to ports 80 and 443
+  
+## SSH into VM
 
-switch into super user
+### switch into super user
   sudo su
 
-install Nginx
+### install Nginx
 
     apt update
     apt upgrade
     apt install nginx
 
-check server
+### check nginx server
 
 systemctl status nginx
 
-if you get an error
+#### if you get an error
 
 mkdir /etc/systemd/system/nginx.service.d
+
 printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
+
 systemctl daemon-reload
+
 systemctl restart nginx 
 
 systemctl status nginx
 
+## Notes
 
-    A separate Nginx server block file for your domain, set up by following this Nginx server blocks tutorial for Ubuntu 16.04. This tutorial will use /etc/nginx/sites-available/example.com.
+I did not create server block files for my domain and it worked
 
-Step 1 — Installing Certbot
+A separate Nginx server block file for your domain, set up by following this Nginx server blocks tutorial for Ubuntu 16.04. This tutorial will use /etc/nginx/sites-available/example.com.
+
+## Installing Certbot
 
 The first step to using Let’s Encrypt to obtain an SSL certificate is to install the Certbot software on your server.
 
 Certbot is in very active development, so the Certbot packages provided by Ubuntu tend to be outdated. However, the Certbot developers maintain a Ubuntu software repository with up-to-date versions, so we’ll use that repository instead.
 
-First, add the repository.
+### add the repository.
 
 add-apt-repository ppa:certbot/certbot
 
@@ -85,82 +99,12 @@ You’ll need to press ENTER to accept. Then, update the package list to pick up
     apt update
     apt upgrade
 
-And finally, install Certbot’s Nginx package with apt-get.
+### install Certbot’s Nginx package with apt-get.
 
     apt install python-certbot-nginx
 
-Certbot is now ready to use, but in order for it to configure SSL for Nginx, we need to verify some of Nginx’s configuration.
-Step 2 — Confirming Nginx’s Configuration
 
-Certbot needs to be able to find the correct server block in your Nginx configuration for it to be able to automatically configure SSL. Specifically, it does this by looking for a server_name directive that matches the domain you request a certificate for.
-
-If you followed the prerequisite tutorial on Nginx server blocks, you should have a server block for your domain at /etc/nginx/sites-available/example.com with the server_name directive already set appropriately.
-
-To check, open the server block file for your domain using nano or your favorite text editor.
-
-    sudo nano /etc/nginx/sites-available/example.com
-
-Find the existing server_name line. It should look like this:
-/etc/nginx/sites-available/example.com
-
-. . .
-server_name example.com www.example.com;
-. . .
-
-If it does, you can exit your editor and move on to the next step.
-
-If it doesn’t, update it to match. Then save the file, quit your editor, and verify the syntax of your configuration edits.
-
-    sudo nginx -t
-
-If you get an error, reopen the server block file and check for any typos or missing characters. Once your configuration file’s syntax is correct, reload Nginx to load the new configuration.
-
-    sudo systemctl reload nginx
-
-Certbot can now find the correct server block and update it.
-
-Next, we’ll update our firewall to allow HTTPS traffic.
-Step 3 — Allowing HTTPS Through the Firewall
-
-If you have the ufw firewall enabled, as recommended by the prerequisite guides, you’ll need to adjust the settings to allow for HTTPS traffic. Luckily, Nginx registers a few profiles with ufw upon installation.
-
-You can see the current setting by typing:
-
-    sudo ufw status
-
-It will probably look like this, meaning that only HTTP traffic is allowed to the web server:
-
-Output
-Status: active
-
-To                         Action      From
---                         ------      ----
-OpenSSH                    ALLOW       Anywhere                  
-Nginx HTTP                 ALLOW       Anywhere                  
-OpenSSH (v6)               ALLOW       Anywhere (v6)             
-Nginx HTTP (v6)            ALLOW       Anywhere (v6)
-
-To additionally let in HTTPS traffic, we can allow the Nginx Full profile and then delete the redundant Nginx HTTP profile allowance:
-
-    sudo ufw allow 'Nginx Full'
-    sudo ufw delete allow 'Nginx HTTP'
-
-Your status should look like this now:
-
-    sudo ufw status
-
-Output
-Status: active
-
-To                         Action      From
---                         ------      ----
-OpenSSH                    ALLOW       Anywhere
-Nginx Full                 ALLOW       Anywhere
-OpenSSH (v6)               ALLOW       Anywhere (v6)
-Nginx Full (v6)            ALLOW       Anywhere (v6)
-
-We’re now ready to run Certbot and fetch our certificates.
-Step 4 — Obtaining an SSL Certificate
+### Obtain an SSL Certificate
 
 Certbot provides a variety of ways to obtain SSL certificates, through various plugins. The Nginx plugin will take care of reconfiguring Nginx and reloading the config whenever necessary:
 
@@ -173,7 +117,11 @@ Certbot provides a variety of ways to obtain SSL certificates, through various p
     
 This runs certbot with the --nginx plugin, using -d to specify the names we’d like the certificate to be valid for.
 
+### Notes
+
 If this is your first time running certbot, you will be prompted to enter an email address and agree to the terms of service. After doing so, certbot will communicate with the Let’s Encrypt server, then run a challenge to verify that you control the domain you’re requesting a certificate for.
+
+### Settings during Certificate Generation
 
 If that’s successful, certbot will ask how you’d like to configure your HTTPS settings.
 
